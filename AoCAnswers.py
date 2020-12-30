@@ -1,29 +1,24 @@
 import sys
 import re
+from collections import defaultdict
+from time import sleep
 
 class AoCAnswers:
     def __init__(self):
         with open('day1_input.txt') as f:
-            self.expense_report = []
-            for line in f:
-                self.expense_report.append(int(line))
+            self.expense_report = [int(line) for line in f]
         
         with open('day2_input.txt') as f:
-            self.password_db = []
-            for line in f:
-                self.password_db.append(line)
+            self.password_db = [line for line in f]
 
         with open('day3_input.txt') as f:
-            self.tree_map = f.readlines()
-        
+            self.tree_map = f.readlines()  
 
         with open('day4_input.txt') as f:
             self.airport_data = f.readlines()
 
         with open('day5_input.txt') as f:
-            self.boarding_passes = []
-            for line in f:
-                self.boarding_passes.append(line.strip())
+            self.boarding_passes = [line.strip() for line in f]
 
         with open('day6_input.txt') as f:
             self.answers = f.readlines()
@@ -31,20 +26,46 @@ class AoCAnswers:
         with open('day7_input.txt') as f:
             self.bag_rules = f.readlines()
 
+        with open('day8_input.txt') as f:
+            self.boot_code = [line.strip() for line in f]
+
+        with open('day9_input.txt') as f:
+            self.xmas_data = [int(line.strip()) for line in f]
+
+        with open('day10_input.txt') as f:
+            self.joltages = [int(line.strip()) for line in f]
+
+        with open('test_input.txt') as f:
+            self.test_data = [int(line.strip()) for line in f]
+
+        with open('day11_input.txt') as f:
+            self.seats = [line.strip() for line in f]
+
+
+
         self.problems_answers = {
-            'problem_1': self.problem_1,
-            'problem_2': self.problem_2,
-            'problem_3': self.problem_3,
-            'problem_4': self.problem_4,
-            'problem_5': self.problem_5,
-            'problem_6': self.problem_6,
-            'problem_7': self.problem_7,
-            'problem_8':self.problem_8,
-            'problem_9': self.problem_9,
-            'problem_10':self.problem_10,
-            'problem_11': self.problem_11,
-            'problem_12': self.problem_12,
-            'problem_13': self.problem_13
+            'day1_1': self.day1_1,
+            'day1_2': self.day1_2,
+            'day2_1': self.day2_1,
+            'day2_2': self.day2_2,
+            'day3_1': self.day3_1,
+            'day3_2': self.day3_2,
+            'day4_1': self.day4_1,
+            'day4_2': self.day4_2,
+            'day5_1': self.day5_1,
+            'day5_2': self.day5_2,
+            'day6_1': self.day6_1,
+            'day6_2': self.day6_2,
+            'day7_1': self.day7_1,
+            'day7_2': self.day7_2,
+            'day8_1': self.day8_1,
+            'day8_2': self.day8_2,
+            'day9_1': self.day9_1,
+            'day9_2': self.day9_2,
+            'day10_1': self.day10_1,
+            'day10_2': self.day10_2,
+            'day11_1': self.day11_1,
+            'day11_2': self.day11_2,
         }
 
 
@@ -54,7 +75,7 @@ class AoCAnswers:
         return problem()
 
 
-    def problem_1(self, max=2020):
+    def day1_1(self, max=2020):
         expense_sheet = {}
         for first_num in self.expense_report:
             second_num = max-first_num
@@ -67,12 +88,11 @@ class AoCAnswers:
         return None
 
 
-    def problem_2(self):
+    def day1_2(self):
         # x + y + z = 2000
         for x in self.expense_report:
             y_plus_z = 2020-x
-
-            yz_product = self.problem_1(max=y_plus_z)
+            yz_product = self.day1_1(max=y_plus_z)
             if yz_product is not None:
                 print('x={0}, yz_product={1}\n{0} * {1} = {2}'.format(x,yz_product,x*yz_product))
                 return x*yz_product
@@ -93,8 +113,7 @@ class AoCAnswers:
         letter = letter.strip(':')
         return minimum, maximum, letter, password
 
-
-    def problem_3(self):
+    def day2_1(self):
         num_valid = 0
         for password_entry in self.password_db:
             minimum, maximum, letter, password = self.clean_entry(password_entry)
@@ -112,7 +131,7 @@ class AoCAnswers:
 
     How many passwords are valid according to the new interpretation of the policies?
     '''
-    def problem_4(self):
+    def day2_2(self):
         num_valid = 0
         for entry in self.password_db:
             pos1, pos2, letter, password = self.clean_entry(entry)
@@ -124,7 +143,7 @@ class AoCAnswers:
         return num_valid
 
 
-    def problem_5(self):
+    def day3_1(self):
         pos = 0
         num_trees = 0
         max_pos = len(self.tree_map[0].strip())
@@ -150,7 +169,7 @@ class AoCAnswers:
     In the above example, these slopes would find 2, 7, 3, 4, and 2 tree(s) respectively;
     multiplied together, these produce the answer 336.
     '''
-    def problem_6(self):
+    def day3_2(self):
         pos1 = pos2 = pos3 = pos4 = pos5 = 0
         num_trees1 = num_trees2 = num_trees3 = num_trees4 = num_trees5 = 0
         
@@ -185,7 +204,7 @@ class AoCAnswers:
     # byr (Birth Year), iyr (Issue Year), eyr (Expiration Year)
     # hgt (Height), hcl (Hair Color), ecl (Eye Color)
     # pid (Passport ID), cid (Country ID)
-    def problem_7(self):
+    def day4_1(self):
         self.passport_data = []
         num_valid = 0
         entry = {}
@@ -267,8 +286,8 @@ class AoCAnswers:
             print(key)
             print('something went wrong')
 
-    def problem_8(self):
-        self.problem_7()
+    def day4_2(self):
+        self.day4_1()
         num_valid = 0
         num_w_7_keys = 0
         total = len(self.passport_data)
@@ -298,7 +317,7 @@ class AoCAnswers:
         elif code[0] == upper:
             return self.find_row_or_col(options[half:], code[1:], lower, upper)
 
-    def problem_9(self):
+    def day5_1(self):
         highest_row = 0
         highest_boarding_passes = []
         for boarding_pass in self.boarding_passes:
@@ -320,7 +339,7 @@ class AoCAnswers:
         return highest_seatID
 
 
-    def problem_10(self):
+    def day5_2(self):
         seat_IDs = []
         for bpass in self.boarding_passes:
             row = self.find_row_or_col([i for i in range(128)], bpass, 'F', 'B')
@@ -338,7 +357,7 @@ class AoCAnswers:
                 previous_seatID = seatID
 
 
-    def problem_11(self):
+    def day6_1(self):
         total_yes = 0
         answers_in_group = set()
         for line in self.answers:
@@ -351,7 +370,7 @@ class AoCAnswers:
         return total_yes
 
 
-    def problem_12(self):
+    def day6_2(self):
         total_all_yes = 0
         all_yes_in_group = set()
         new_group = True
@@ -370,37 +389,263 @@ class AoCAnswers:
         return total_all_yes
 
 
-    def problem_13(self):
-        bags = {}
+    def day7_1(self):
+        bags = defaultdict(set)
         for line in self.bag_rules:
             line = line.strip()
-            container, containees = line.split('contain')
-            container = container.strip()[:-1]
-            containees = containees.split(',')
-            cleaned_containees = []
-            for c in containees:
-                c = c.strip()
-                if c.endswith('.'): c = c[:-1] 
-                if re.match(r'[1-9]', c):
+            outer_bag, inner_bags = line.split('contain')
+            outer_bag = outer_bag.strip()[:-1]
+            inner_bags = inner_bags.split(',')
+            for b in inner_bags:
+                b = b.strip()
+                if b.endswith('.'): b = b[:-1] 
+                if re.match(r'[1-9]', b):
                     # strip off leading number
-                    c = c[1:].strip()
+                    b = b[1:].strip()
                     # strip off trailing 's' if it exists
-                    if c.endswith('s'): c = c[:-1]
-                    cleaned_containees.append(c)
-            bags[container] = cleaned_containees
+                    if b.endswith('s'): b = b[:-1]
+                
+                bags[b].add(outer_bag)
 
-        can_hold_gold_bag = set()
-        for bag, bags_inside in bags.items():
-            if 'shiny_gold_bags' in bags_inside:
-                can_hold_gold_bag.add(bag)
+        target_bags = bags['shiny gold bag']
+        visited_bags = set()
+        while target_bags:
+            bag = target_bags.pop()
+            visited_bags.add(bag)
+            for outer_bag in bags.get(bag, []):
+                target_bags.add(outer_bag)
+        return len(visited_bags)
 
 
+    def day7_2(self):
+        # implement DFS algorithm
+        def find_inner_bags(current_bag):
+            if current_bag == 'no other bag':
+                return 0
+            try:
+                num_cur_bag = int(current_bag[0])
+            except:
+                print(current_bag, current_bag[0])
+                exit()
+            current_bag = current_bag[1:].strip()
+            total_in_bag = num_cur_bag
+            for bag in bags[current_bag]:
+                total_in_bag += num_cur_bag*find_inner_bags(bag)
+            return total_in_bag
+    
+        bags = defaultdict(list)
+        for line in self.bag_rules:
+            line = line.strip()
+            outer_bag, inner_bags = line.split(' contain ')
+            outer_bag = outer_bag.rstrip('s ')
+            inner_bags = inner_bags.split(',')
+            for b in inner_bags:
+                b = b.strip().rstrip('s. ')
+                bags[outer_bag].append(b)
 
+        print('bags in shiny gold bag = {}'.format(len(bags['shiny gold bag'])))
+        return find_inner_bags(bags['shiny gold bag'][0])
+
+
+    def day8_1(self, boot_code=[]):
+        if not boot_code: boot_code=self.boot_code[:]
+        print("testing...")
+        i = 0
+        acc = 0
+        while i < len(boot_code):
+            inst = boot_code[i]
+            if 'STOP' in inst:
+                return False, acc
+            boot_code[i] = inst+'STOP'
+            if inst.startswith('jmp'):
+                # '-12' will get converted to -12 by int()
+                i += int(inst[3:].strip())
+            elif inst.startswith('acc'):
+                acc += int(inst[3:].strip())
+                i += 1
+            elif inst.startswith('nop'):
+                i += 1
+        return True, acc
+
+
+    def switch_op(self, opcode, old_op, new_op):
+        return opcode.replace(old_op,new_op)
+        
+    def day8_2(self):
+        for i, operation in enumerate(self.boot_code):
+            boot_code = self.boot_code[:]
+            print(i)
+            if not operation.startswith('acc'):
+                if operation.startswith('jmp'):
+                    old_op, new_op = 'jmp','nop'
+                elif operation.startswith('nop'):
+                    old_op, new_op = 'nop','jmp'
+                test_op = self.switch_op(operation, old_op, new_op)
+                boot_code[i] = test_op
+                successful, acc = self.day8_1(boot_code)
+                if successful:
+                    return acc
+                else:
+                    boot_code[i] = operation
+
+        return 'FAILURE'
+
+
+    def find_match(self, target, first_num, options25):
+        second_num = target-first_num
+        options25.remove(first_num)
+        options24 = set(options25)
+        return second_num in options24
+    
+    def day9_1(self, preamble = 25):
+        for i in range(preamble,len(self.xmas_data)):
+            options25 = sorted(self.xmas_data[i-preamble:i])          
+            target = self.xmas_data[i]
+            found_match = False
+            for option in options25:
+                options = options25[:]
+                if self.find_match(target, option, options):
+                    found_match = True
+                    break
+            if not found_match:
+                return target
+    
+        return "All numbers can be created by adding 2 of the previous 25 numbers"
+
+    def day9_2(self):
+        target = self.day9_1(preamble = 25)
+        print("target is {}".format(target))
+        contiguous_list = []
+        contiguous_amount = 0
+        for num in self.xmas_data:
+            if contiguous_amount == target:
+                contiguous_list.sort()
+                return contiguous_list[0] + contiguous_list[-1]
+            if num != target:
+                contiguous_list.append(num)
+                contiguous_amount += num
+                while contiguous_amount > target:
+                    contiguous_amount -= contiguous_list[0]
+                    contiguous_list = contiguous_list[1:]
+        return("ERROR")
+
+
+    def day10_1(self):
+        self.joltages.sort()
+        print('there are {} adaptors'.format(len(self.joltages)))
+        num1s = 0
+        num2s = 0
+        # difference b/w highest adaptor and device
+        # is always 3
+        num3s = 1
+        cur_jolt = 0
+        for next_jolt in self.joltages:
+            diff = next_jolt - cur_jolt
+            if diff == 1: num1s += 1
+            elif diff == 2: num2s += 1
+            elif diff == 3: num3s += 1
+            else: print('ERROR: diff = {}'.format(diff))
+            cur_jolt = next_jolt
+        print('{} * {} = '.format(num1s, num3s))
+        return num1s * num3s
+
+
+    def valid_adaptor(self, cur_adaptor, next_adaptor):
+        return (next_adaptor - cur_adaptor) <= 3
+
+    def adaptors_dfs(self, adaptor, options, memoized):
+        
+        if adaptor in memoized:
+            return memoized[adaptor]
+        elif not options[adaptor]:
+            return 1
+        else:
+            memoized[adaptor] = sum([self.adaptors_dfs(a, options, memoized) for a in options[adaptor]])
+            return memoized[adaptor]
+
+        
+    def day10_2(self):
+        adaptors = [0]+sorted(self.joltages)
+        adaptors.append(adaptors[-1]+3)
+        print(adaptors)
+        print(len(adaptors))
+        sleep(1)
+        options = {}
+        for a1 in adaptors:
+            options[a1]=[a for a in range(a1+1, a1+4) if a in adaptors]
+        result = self.adaptors_dfs(0, options, {})
+        return result
+
+    
+    def day11_1(self):
+        old_seat_layout = self.seats
+        new_seat_layout = ['#' if s == 'L' else s for l in self.seats for s in l]
+        num_rows = len(self.seats)
+        row_len = len(self.seats[0]) 
+        while old_seat_layout != new_seat_layout:
+            for x in range(num_rows):
+                for y in range(row_len):
+                    cur_seat = old_seat_layout[x][y]
+                    if cur_seat == '.':
+                        continue
+                    seats_taken = 0
+                    if x == 0: # top row
+                        if y == 0: # top left corner
+                            if old_seat_layout[x][y+1] == '#': seats_taken += 1
+                            if old_seat_layout[x+1][y] == '#': seats_taken += 1
+                            if old_seat_layout[x+1][y+1] == '#': seats_taken += 1
+                        elif y == row_len-1: # top right corner
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x+1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y-1])
+                        else: # top row other than corners
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x][y+1])
+                            seats_to_check.append(old_seat_layout[x+1][y])
+                            seats_to_check.append(old_seat_layout[x+1][y-1])
+                            seats_to_check.append(old_seat_layout[x+1][y+1])
+                    elif x == len(old_seat_layout-1): # bottom row
+                        if y == 0: # bottom left corner
+                            seats_to_check.append(old_seat_layout[x][y+1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y+1])
+                        elif y == row_len-1: # bottom right corner
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y-1])
+                        else: # top row other than corners
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x][y+1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y-1])
+                            seats_to_check.append(old_seat_layout[x-1][y+1])
+                    else: # middle rows
+                        if y == 0: # left edge of row
+                            seats_to_check.append(old_seat_layout[x][y+1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y+1])
+                            seats_to_check.append(old_seat_layout[x+1][y])
+                            seats_to_check.append(old_seat_layout[x+1][y+1])
+                            
+                        elif y == len(row)-1: # right edge of row
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y-1])
+                            seats_to_check.append(old_seat_layout[x+1][y])
+                            seats_to_check.append(old_seat_layout[x+1][y-1])
+                        else: # middle seat needs 8 seats to check
+                            seats_to_check.append(old_seat_layout[x][y-1])
+                            seats_to_check.append(old_seat_layout[x][y+1])
+                            seats_to_check.append(old_seat_layout[x-1][y])
+                            seats_to_check.append(old_seat_layout[x-1][y-1])
+                            seats_to_check.append(old_seat_layout[x-1][y+1])
+                            seats_to_check.append(old_seat_layout[x+1][y])
+                            seats_to_check.append(old_seat_layout[x+1][y-1])
+                            seats_to_check.append(old_seat_layout[x+1][y+1])
+                    check_seats(seats_to_check)
 
 
 if __name__=='__main__':
     problem = sys.argv[1]
-
     Advent = AoCAnswers()
-
     print(Advent.get_ans(problem))
